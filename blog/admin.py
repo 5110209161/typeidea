@@ -12,7 +12,7 @@ class PostInline(admin.TabularInline):
     model = Post
 
 @admin.register(Category, site=custom_site)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(BaseOwnerAdmin):
     inlines = [PostInline, ]  # 设置在同一页面编辑关联数据
 
     list_display = ('name', 'status', 'owner', 'is_nav', 'created_time', 'post_count')
@@ -22,6 +22,7 @@ class CategoryAdmin(admin.ModelAdmin):
     #     obj.owner = request.user
     #     return super(CategoryAdmin, self).save_model(request, obj, form, change)
 
+    #自定义字段，分类文章计数
     def post_count(self, obj):
         return obj.post_set.count()
     post_count.short_description = '文章数量'
@@ -118,4 +119,8 @@ class PostAdmin(BaseOwnerAdmin):
     #     qs = super(PostAdmin, self).get_queryset(request)
     #     return qs.filter(owner=request.user)
 
+from django.contrib.admin.models import LogEntry
 
+@admin.register(LogEntry, site=custom_site)
+class LogEntryAdmin(admin.ModelAdmin):
+    list_display = ['object_repr', 'object_id', 'action_flag', 'user', 'change_message']

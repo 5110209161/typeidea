@@ -3,6 +3,7 @@ from django.contrib import admin
 
 class BaseOwnerAdmin(admin.ModelAdmin):
     """
+    作为ModelAdmin的集成方法，添加自定义函数，减少代码量
     1. 用来自动补充文章、分类、标签、侧边栏、友链等model字段的owner字段
     2. 用来针对queryset过滤当前用户数据
     """
